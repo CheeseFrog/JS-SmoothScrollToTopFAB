@@ -1,4 +1,5 @@
-window.addEventListener("load", start);
+
+if (document.readyState === "complete") start(); else window.addEventListener("load", start);
 
 function start() {
 	var up = document.createElement("div");
@@ -14,6 +15,7 @@ function start() {
 	const css = document.createElement("style");
 	css.textContent = `
 #up {
+    z-index:999;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     cursor: pointer;
     user-select: none;
