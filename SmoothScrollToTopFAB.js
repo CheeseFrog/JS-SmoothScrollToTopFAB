@@ -1,20 +1,21 @@
 
-if (document.readyState === "complete") start(); else window.addEventListener("load", start);
+if (document.readyState === "complete") FABstart(); else window.addEventListener("load", FABstart);
 
-function start() {
+function FABstart() {
 	var up = document.createElement("div");
-	up.id = "up";
+	up.id = "FABup";
 
 	function home() {window.scrollTo({top: 0, behavior: "smooth"})}
 	up.addEventListener("click", home, {passive: true});
 	
-	function chktp() {document.body.setAttribute("top", +(window.pageYOffset < 100))}
+	function chktp() {document.body.setAttribute("FABtop", +(window.pageYOffset < 100))}
 	window.addEventListener("scroll", chktp, {passive: true})
 	chktp();
 
 	const css = document.createElement("style");
 	css.textContent = `
-#up {
+#FABup {
+    all:initial;
     z-index:999;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     cursor: pointer;
@@ -33,7 +34,7 @@ function start() {
     text-align: center;
     opacity: .5;
 }
-#up:before {
+#FABup:before {
     content: "";
     font-size: 0;
     padding: 4vmin;
@@ -43,12 +44,12 @@ function start() {
     top: -8.33%;
     clip-path: polygon(50% 00%, 100% 86.6%, 0% 86.6%);
 }
-[top="1"] #up {
+[FABtop="1"]>#FABup {
     transform: translateY(100%);
     opacity: 0;
     pointer-events: none;
 }
-#up:active {
+#FABup:active {
     transition: none;
     opacity: .99
 }
