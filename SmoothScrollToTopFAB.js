@@ -52,9 +52,9 @@ function FABstart() {
 }
 #FABup:hover:active {
 	transition: none;
-	opacity: .99
+	opacity: .99;
 }
 `
 	document.head.appendChild(css);
-	document.body.appendChild(up)
+	document.body.appendChild(up);
 }
