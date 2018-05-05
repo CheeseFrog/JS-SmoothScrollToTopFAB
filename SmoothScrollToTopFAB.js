@@ -50,7 +50,7 @@ function FABstart() {
 	opacity: 0;
 	pointer-events: none;
 }
-#FABup:active {
+#FABup:hover:active {
 	transition: none;
 	opacity: .99
 }
