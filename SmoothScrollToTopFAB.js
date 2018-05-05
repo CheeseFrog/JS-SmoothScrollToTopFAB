@@ -55,6 +55,6 @@ function FABstart() {
 	opacity: .99
 }
 `
-	document.head.appendChild( css );
+	document.head.appendChild(css);
 	document.body.appendChild(up)
 }
