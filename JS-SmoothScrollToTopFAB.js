@@ -1,80 +1,86 @@
 // Add this : <script src="./JS-SmoothScrollToTopFAB.js"></script>
 
-function SFAB() {
-	window.SFAB = undefined
-	var up = document.createElement("div");
-	up.className = "FABdo";	up.id = "FABup";
+function SFAB() { window.SFAB = undefined
+	var B = document.createElement("div");
+	B.className = "FABdo";	B.id = "FABup";
 
-	function home() {window.scrollTo({top: 0, behavior: "smooth"})}
-	up.addEventListener("click", home, {passive: true});
-	
-	function chktp() {up.setAttribute("X", +!(window.pageYOffset < 100))}
-	window.addEventListener("scroll", chktp, {passive: true})
-	chktp();
+	function isScroll() {clearTimeout(isScroll.on); isScroll.on=setTimeout(function(){isScroll.on=0},10)}
+	function home() {window.scrollTo({top:0, behavior:(isScroll.on?"auto":"smooth")})}
+	B.addEventListener("click", home, {passive: true});
+
+	function atTop(y) {return +(window.pageYOffset < (y||3))}
+	function sticky() {isScroll(); var IO = +!atTop(100); if (IO!=B.getAttribute("IO")) B.setAttribute("IO", IO)}
+	window.addEventListener("scroll", sticky, {passive: true})
+	sticky();
 
 	const css = document.createElement("style");
 	css.textContent = `
 	.FABdo {
 		all: initial;
-		z-index: 9999;
+		--FABsize: calc(8vh + 4px);
+		z-index: 10001;
 		cursor: pointer;
 		-webkit-tap-highlight-color: transparent;
-		-moz-user-select: none;
 		user-select: none;
 		position: fixed;
 		border-radius: 100%;
-		padding: 2.5vh;
-		width: 8vmin;
-		height: 8vmin;
-		background: black;
+		padding: calc(var(--FABsize) / 3);
+		width: var(--FABsize);
+		height: var(--FABsize);
+		background: hsl(0,0%,33%);
 		text-align: center;
-		transition: transform .15s, opacity .15s;
-		border: 5vh solid transparent;
+		border: calc(var(--FABsize) / 2) solid transparent;
 		background-clip: padding-box;
-		opacity:.5;
+		opacity:.66;
+		transition: transform .4s 0s;
+	}
+
+	.FABdo:not([IO="0"]) {
+		transition: transform .2s 0s;
 	}
 
 	.FABdo:before {
 		content: "";
 		font-size: 0;
 		display: block;
-		height: 8vmin;
+		height: var(--FABsize);
 		background: white;
 		top:-6.7%;
 		position: relative;
 		clip-path: polygon(50% 0%, 100% 86.6%, 0% 86.6%);
 	}
 
-	.FABdo:hover {
-		opacity: .75;
-	}
-
-	.FABdo:hover:active {
-		box-shadow: inset 0 0 0 3px var(--highlight, highlight);
+	.FABdo[IO]:active:hover {
+		box-shadow: inset 0 0 0 0.5px hsl(0,0%,33%), inset 0 0 0 4px var(--highlight, highlight);
 		opacity: .99;
 	}
 
-	.FABdo[X="0"]:not(:hover):not(:active) {
-		pointer-events: none;
-		opacity: 0;
+	@media (hover: hover) and (pointer: fine) {
+	.FABdo:hover {
+		opacity: .825;
+	}
+	.FABdo[IO="0"]:hover {
+		transition: transform .4s 2.5s;
+	}
 	}
 
+	.FABdo[D="1"] {
+		opacity: 0.25 !important;
+	}
+
+/**/
 	#FABup {
 		bottom: 0;
 		right: 0;
 		transform: translateY(0px);
 	}
 
-	#FABup[X="0"]:not(:hover):not(:active) {
+	#FABup[IO="0"]:not(:active) {
 		transform: translateY(100%);
-	}
-
-	#BFAB {
-		display: none;
 	}
 	`
 	document.head.appendChild(css);
-	document.body.appendChild(up)
+	document.body.appendChild(B)
 }
 
 if (document.readyState != "loading") SFAB(); else window.addEventListener("load", SFAB);
